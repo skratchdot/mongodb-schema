@@ -141,7 +141,7 @@
 			type = getType(node);
 
 			// We need to handle objects and arrays by calling getKeyInfo() recursively
-			if (type !== 'objectid' && (typeof node === 'object' || type === 'array')) {
+			if (['array', 'bson', 'object'].indexOf(type) >= 0) {
 
 				// Set the flag to be used in our for loop below
 				if (type === 'array' && arraysAreWildcards === true) {
