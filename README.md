@@ -6,7 +6,7 @@
 
 ## Description: ##
 
-This is a schema analysis tool from MongoDB. It accomplishes this by
+This is a schema analysis tool for MongoDB. It accomplishes this by
 extended the mongo shell, and providing a new function called schema()
 with the following signature:  
 
@@ -18,14 +18,17 @@ does. It adds the following 3 parameters that can be used as well:
     wildcards - array (default: [])
         By using the $, you can combine report results.
         For instance: '$' will group all top level keys and
+        'foo.$.bar' will combine 'foo.baz.bar' and 'foo.bar.bar'
 
     arraysAreWildcards - boolean (default: true)
-        When true, 'foo.0.bar' and 'foo.1.bar' will be combined into 'foo.$.bar'
+        When true, 'foo.0.bar' and 'foo.1.bar' will be
+        combined into 'foo.$.bar'
         When false, all array keys will be reported
 
     fields - object (default: {})
-        Similar to the usage in find(). You can pick fields to include or exclude.
-        Currently, you cannot pass in nested structures, you need to pass in dot notation keys.
+        Similar to the usage in find(). You can pick the
+        fields to include or exclude. Currently, you cannot 
+        pass in nested structures, you need to pass in dot notation keys.
 
 ## Usage: ##
 
@@ -69,3 +72,7 @@ See: http://www.mongodb.org/display/DOCS/Overview+-+The+MongoDB+Interactive+Shel
 Start the shell after executing this script  
 
     mongo --shell schema.js
+
+## Inspired by: ##
+
+Variety: https://github.com/JamesCropcho/variety

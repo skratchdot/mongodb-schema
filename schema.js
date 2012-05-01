@@ -24,16 +24,19 @@
  *  does. It adds the following 3 parameters that can be used as well:
  * 
  *      wildcards - array (default: [])
- *          By using the $, you can combine report results. For instance: '$' will group all top level keys
+ *          By using the $, you can combine report results.
+ *          For instance: '$' will group all top level keys and
+ *          'foo.$.bar' will combine 'foo.baz.bar' and 'foo.bar.bar'
  * 
  *      arraysAreWildcards - boolean (default: true)
- *          When true, 'foo.0.bar' and 'foo.1.bar' will be combined into 'foo.$.bar'
+ *          When true, 'foo.0.bar' and 'foo.1.bar' will be
+ *          combined into 'foo.$.bar'
  *          When false, all array keys will be reported
  * 
  *      fields - object (default: {})
- *          Similar to the usage in find(). You can pick fields to include or exclude.
- *          Currently, you cannot pass in nested structures, you need to pass in dot notation keys.
- * 
+ *          Similar to the usage in find(). You can pick the
+ *          fields to include or exclude. Currently, you cannot
+ *          pass in nested structures, you need to pass in dot notation keys.
  * 
  * Return schema results inline
  *     db.users.schema();
@@ -59,7 +62,11 @@
  * 
  * By design, schema() returns 'bson' rather than 'object'.
  * It will return 'numberlong' rather than 'number', etc.
-
+ * 
+ * Inspired by:
+ * 
+ * Variety: https://github.com/JamesCropcho/variety
+ * 
  * Copyright (c) 2012 SKRATCHDOT.COM
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
