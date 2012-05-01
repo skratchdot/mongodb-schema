@@ -249,7 +249,7 @@
 		 */
 		finalize = function (key, value) {
 			var type, result = {
-				wildcard : false,
+				wildcard : (key.search(/^\$|\.\$/gi) >= 0),
 				types : [],
 				results : [{
 					type : 'all',
