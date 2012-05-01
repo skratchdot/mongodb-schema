@@ -255,7 +255,7 @@
 					type : 'all',
 					numDocs : value.all.numDocs,
 					numDocsCoverage : (value.all.numDocs / statCount) * 100,
-					numTimesInDoc : value.all.numTimesInDoc
+					numTimesInDoc : value.all.numTimesInDoc / value.all.numDocs
 				}]
 			};
 			for (type in value) {
@@ -313,7 +313,11 @@
 		}
 
 		// Store the total number of documents to be used in the finalize function
-		statCount = this.stats().count;
+		if (options.hasOwnProperty('limit') && typeof options.limit === 'number') {
+			statCount = options.limit;
+		} else {
+			statCount = this.stats().count;
+		}
 
 		// Make sure to override certain options
 		options.map = map;
