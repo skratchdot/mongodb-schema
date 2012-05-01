@@ -10,25 +10,24 @@ This is a schema analysis tool from MongoDB. It accomplishes this by
 extended the mongo shell, and providing a new function called schema()
 with the following signature:  
 
-    DBCollection.prototype.schema = function (optionsOrOutString)
+    DBCollection.prototype.schema = function (optionsOrOutString)  
+
+The schema() function accepts all the same parameters that the mapReduce() function
+does. It adds the following 3 parameters that can be used as well:
+
+    wildcards - array (default: [])
+        By using the $, you can combine report results.
+        For instance: '$' will group all top level keys and
+
+    arraysAreWildcards - boolean (default: true)
+        When true, 'foo.0.bar' and 'foo.1.bar' will be combined into 'foo.$.bar'
+        When false, all array keys will be reported
+
+    fields - object (default: {})
+        Similar to the usage in find(). You can pick fields to include or exclude.
+        Currently, you cannot pass in nested structures, you need to pass in dot notation keys.
 
 ## Usage: ##
-
-    //
-    // The schema() function accepts all the same parameters that the mapReduce() function
-    // does. It adds the following 3 parameters that can be used as well:
-    //
-    //     wildcards - array (default: [])
-    //         By using the $, you can combine report results. For instance: '$' will group all top level keys
-    //
-    //     arraysAreWildcards - boolean (default: true)
-    //         When true, 'foo.0.bar' and 'foo.1.bar' will be combined into 'foo.$.bar'
-    //         When false, all array keys will be reported
-    //
-    //     fields - object (default: {})
-    //         Similar to the usage in find(). You can pick fields to include or exclude.
-    //         Currently, you cannot pass in nested structures, you need to pass in dot notation keys.
-    //
 
     // Return schema results inline
     db.users.schema();
