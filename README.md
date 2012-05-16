@@ -75,4 +75,4 @@ Start the shell after executing this script
 
 ## Inspired by: ##
 
-Variety: https://github.com/JamesCropcho/variety
+Variety: [https://github.com/JamesCropcho/variety](https://github.com/JamesCropcho/variety)
