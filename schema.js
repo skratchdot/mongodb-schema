@@ -1,10 +1,10 @@
-/*global DBCollection: false, emit: false */
+/*global DBCollection: false, emit: false, print: false */
 /*jslint devel: false, nomen: true, unparam: true, plusplus: true, maxerr: 50, indent: 4 */
 /**
  * MongoDB - schema.js
  * 
- *      Version: 1.0
- *         Date: April 29, 2012
+ *      Version: 1.1
+ *         Date: May 28, 2012
  *      Project: http://skratchdot.github.com/mongodb-schema/
  *  Source Code: https://github.com/skratchdot/mongodb-schema/
  *       Issues: https://github.com/skratchdot/mongodb-schema/issues/
@@ -21,7 +21,7 @@
  * Usage:
  * 
  *  The schema() function accepts all the same parameters that the mapReduce() function
- *  does. It adds the following 3 parameters that can be used as well:
+ *  does. It adds/modifies the following 4 parameters that can be used as well:
  * 
  *      wildcards - array (default: [])
  *          By using the $, you can combine report results.
@@ -37,6 +37,10 @@
  *          Similar to the usage in find(). You can pick the
  *          fields to include or exclude. Currently, you cannot
  *          pass in nested structures, you need to pass in dot notation keys.
+ *      
+ *      limit - number (default: 50)
+ *          Behaves the same as the limit in mapReduce(), but defaults to 50.
+ *          You can pass in 0 or -1 to process all documents.
  * 
  * Return schema results inline
  *     db.users.schema();
@@ -58,6 +62,12 @@
  * Don't treat arrays as a wildcard
  *     db.users.schema({arraysAreWildcards:false});
  * 
+ * Process 50 documents
+ *     db.users.schema();
+ * 
+ * Process all documents
+ *     db.users.schema({limit:-1});
+ * 
  * Caveats:
  * 
  * By design, schema() returns 'bson' rather than 'object'.
@@ -76,6 +86,14 @@
 	'use strict';
 
 	/**
+	 * You can pass in the same options object that mapReduce() accepts. Schema has the following
+	 * defaults for options:
+	 * 
+	 * options.out = { inline : 1 };
+	 * options.limit = 50;
+	 * 
+	 * You can pass in an options.limit value of 0 or -1 to parse _all_ documents.
+	 * 
 	 * @function
 	 * @name flatten
 	 * @memberOf DBCollection
@@ -84,7 +102,7 @@
 	DBCollection.prototype.schema = function (optionsOrOutString) {
 		var statCount = 0, wildcards = [], arraysAreWildcards = true,
 			field, fields = {}, usePositiveFields = false, useNegativeFields = false,
-			getType, getNewKeyString, getKeyInfo, map, reduce, finalize, options = {};
+			getType, getNewKeyString, getKeyInfo, map, reduce, finalize, options = { limit : 50 };
 
 		/**
 		 * @function
@@ -174,13 +192,13 @@
 
 			// We need to emit this key
 			if (keyInfo.hasOwnProperty(keyString) && keyInfo[keyString].hasOwnProperty(type)) {
-				keyInfo[keyString][type].numTimesInDoc += 1;
+				keyInfo[keyString][type].perDoc += 1;
 			} else {
 				keyInfo[keyString] = {};
 				keyInfo[keyString][type] = {
-					numDocs : 1,
-					numDocsCoverage : 0,
-					numTimesInDoc : 1
+					docs : 1,
+					coverage : 0,
+					perDoc : 1
 				};
 			}
 
@@ -204,12 +222,12 @@
 					count = 0;
 					for (type in keyInfo[key]) {
 						if (keyInfo[key].hasOwnProperty(type)) {
-							count += keyInfo[key][type].numTimesInDoc;
+							count += keyInfo[key][type].perDoc;
 						}
 					}
 					keyInfo[key].all = {
-						numDocs : 1,
-						numTimesInDoc : count
+						docs : 1,
+						perDoc : count
 					};
 					emit(key, keyInfo[key]);
 				}
@@ -230,10 +248,10 @@
 				for (type in value) {
 					if (value.hasOwnProperty(type)) {
 						if (!result.hasOwnProperty(type)) {
-							result[type] = { numDocs : 0, numDocsCoverage : 0, numTimesInDoc : 0 };
+							result[type] = { docs : 0, coverage : 0, perDoc : 0 };
 						}
-						result[type].numDocs += value[type].numDocs;
-						result[type].numTimesInDoc += value[type].numTimesInDoc;
+						result[type].docs += value[type].docs;
+						result[type].perDoc += value[type].perDoc;
 					}
 				}
 			});
@@ -253,9 +271,9 @@
 				types : [],
 				results : [{
 					type : 'all',
-					numDocs : value.all.numDocs,
-					numDocsCoverage : (value.all.numDocs / statCount) * 100,
-					numTimesInDoc : value.all.numTimesInDoc / value.all.numDocs
+					docs : value.all.docs,
+					coverage : (value.all.docs / statCount) * 100,
+					perDoc : value.all.perDoc / value.all.docs
 				}]
 			};
 			for (type in value) {
@@ -263,9 +281,9 @@
 					result.types.push(type);
 					result.results.push({
 						type : type,
-						numDocs : value[type].numDocs,
-						numDocsCoverage : (value[type].numDocs / statCount) * 100,
-						numTimesInDoc : value[type].numTimesInDoc / value[type].numDocs
+						docs : value[type].docs,
+						coverage : (value[type].docs / statCount) * 100,
+						perDoc : value[type].perDoc / value[type].docs
 					});
 				}
 			}
@@ -313,10 +331,11 @@
 		}
 
 		// Store the total number of documents to be used in the finalize function
-		if (options.hasOwnProperty('limit') && typeof options.limit === 'number') {
+		statCount = this.stats().count;
+		if (options.hasOwnProperty('limit') && typeof options.limit === 'number' && options.limit > 0 && options.limit < statCount) {
 			statCount = options.limit;
-		} else {
-			statCount = this.stats().count;
+		} else if (options.hasOwnProperty('limit')) {
+			delete options.limit;
 		}
 
 		// Make sure to override certain options
@@ -337,6 +356,7 @@
 		};
 
 		// Execute and return
+		print('Processing ' + statCount + ' document(s)...');
 		return this.mapReduce(map, reduce, options);
 	};
 

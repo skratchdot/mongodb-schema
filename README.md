@@ -13,7 +13,7 @@ with the following signature:
     DBCollection.prototype.schema = function (optionsOrOutString)  
 
 The schema() function accepts all the same parameters that the mapReduce() function
-does. It adds the following 3 parameters that can be used as well:
+does. It adds/modifies the following 4 parameters that can be used as well:
 
     wildcards - array (default: [])
         By using the $, you can combine report results.
@@ -30,6 +30,10 @@ does. It adds the following 3 parameters that can be used as well:
         fields to include or exclude. Currently, you cannot 
         pass in nested structures, you need to pass in dot notation keys.
 
+    limit - number (default: 50)
+        Behaves the same as the limit in mapReduce(), but defaults to 50.
+        You can pass in 0 or -1 to process all documents.
+
 ## Usage: ##
 
     // Return schema results inline
@@ -45,12 +49,18 @@ does. It adds the following 3 parameters that can be used as well:
     
     // Report on everything except 'name.first'
     db.users.schema({fields:{'name.first':-1}});
-
+    
     // Combine the 'name.first' and 'name.last' keys into 'name.$'
     db.users.schema({wildcards:['name.$']});
     
     // Don't treat arrays as a wildcard
     db.users.schema({arraysAreWildcards:false});
+    
+    // Process 50 documents
+    db.users.schema();
+    
+    // Process all documents
+    db.users.schema({limit:-1});
 
 ## Caveats: ##
 
