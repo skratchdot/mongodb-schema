@@ -62,6 +62,108 @@ does. It adds/modifies the following 4 parameters that can be used as well:
     // Process all documents
     db.users.schema({limit:-1});
 
+## Example Result Set: ##
+
+    > // Start fresh with a new collection called 'users'
+    > db.users.remove();
+    > 
+    > // Add a few records with different schemas
+    > db.users.insert({'name' : {'first' : 'John', 'last' : 'Smith'}, 'isRegistered' : false, 'tags' : ['male']});
+    > db.users.insert({'name' : {'first' : 'Bob', 'last' : 'Smith'}, 'isRegistered' : false, 'tags' : ['male','new']});
+    > db.users.insert({'name' : {'first' : 'Amy', 'last' : 'Smart'}, 'isRegistered' : 1, 'tags' : ['female']});
+    > db.users.insert({'name' : 'Bob Smith', 'isRegistered' : '0', 'tags' : ['male']});
+    > 
+    > // Print our results to the console
+    > db.users.schema();
+    Processing 4 document(s)...
+    {
+    	"results" : [
+    		{
+    			"_id" : "_id",
+    			"value" : {
+    				"wildcard" : false,
+    				"types" : ["objectid"],
+    				"results" : [
+    					{"type" : "all","docs" : 4,"coverage" : 100,"perDoc" : 1},
+    					{"type" : "objectid","docs" : 4,"coverage" : 100,"perDoc" : 1}
+    				]
+    			}
+    		},
+    		{
+    			"_id" : "isRegistered",
+    			"value" : {
+    				"wildcard" : false,
+    				"types" : ["boolean","number","string"],
+    				"results" : [
+    					{"type" : "all","docs" : 4,"coverage" : 100,"perDoc" : 1},
+    					{"type" : "boolean","docs" : 2,"coverage" : 50,"perDoc" : 1},
+    					{"type" : "number","docs" : 1,"coverage" : 25,"perDoc" : 1},
+    					{"type" : "string","docs" : 1,"coverage" : 25,"perDoc" : 1}
+    				]
+    			}
+    		},
+    		{
+    			"_id" : "name",
+    			"value" : {
+    				"wildcard" : false,
+    				"types" : ["bson","string"],
+    				"results" : [
+    					{"type" : "all","docs" : 4,"coverage" : 100,"perDoc" : 1},
+    					{"type" : "bson","docs" : 3,"coverage" : 75,"perDoc" : 1},
+    					{"type" : "string","docs" : 1,"coverage" : 25,"perDoc" : 1}
+    				]
+    			}
+    		},
+    		{
+    			"_id" : "name.first",
+    			"value" : {
+    				"wildcard" : false,
+    				"types" : ["string"],
+    				"results" : [
+    					{"type" : "all","docs" : 3,"coverage" : 75,"perDoc" : 1},
+    					{"type" : "string","docs" : 3,"coverage" : 75,"perDoc" : 1}
+    				]
+    			}
+    		},
+    		{
+    			"_id" : "name.last",
+    			"value" : {
+    				"wildcard" : false,
+    				"types" : ["string"],
+    				"results" : [
+    					{"type" : "all","docs" : 3,"coverage" : 75,"perDoc" : 1},
+    					{"type" : "string","docs" : 3,"coverage" : 75,"perDoc" : 1}
+    				]
+    			}
+    		},
+    		{
+    			"_id" : "tags",
+    			"value" : {
+    				"wildcard" : false,
+    				"types" : ["array"],
+    				"results" : [
+    					{"type" : "all","docs" : 4,"coverage" : 100,"perDoc" : 1},
+    					{"type" : "array","docs" : 4,"coverage" : 100,"perDoc" : 1}
+    				]
+    			}
+    		},
+    		{
+    			"_id" : "tags.$",
+    			"value" : {
+    				"wildcard" : true,
+    				"types" : ["string"],
+    				"results" : [
+    					{"type" : "all","docs" : 4,"coverage" : 100,"perDoc" : 1.25},
+    					{"type" : "string","docs" : 4,"coverage" : 100,"perDoc" : 1.25}
+    				]
+    			}
+    		}
+    	],
+    	"timeMillis" : 16,
+    	"counts" : {"input" : 4,"emit" : 26,"reduce" : 7,"output" : 7},
+    	"ok" : 1,
+    }
+
 ## Caveats: ##
 
 By design, schema() returns 'bson' rather than 'object'.
