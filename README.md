@@ -77,91 +77,91 @@ does. It adds/modifies the following 4 parameters that can be used as well:
     > db.users.schema();
     Processing 4 document(s)...
     {
-    	"results" : [
-    		{
-    			"_id" : "_id",
-    			"value" : {
-    				"wildcard" : false,
-    				"types" : ["objectid"],
-    				"results" : [
-    					{"type" : "all","docs" : 4,"coverage" : 100,"perDoc" : 1},
-    					{"type" : "objectid","docs" : 4,"coverage" : 100,"perDoc" : 1}
-    				]
-    			}
-    		},
-    		{
-    			"_id" : "isRegistered",
-    			"value" : {
-    				"wildcard" : false,
-    				"types" : ["boolean","number","string"],
-    				"results" : [
-    					{"type" : "all","docs" : 4,"coverage" : 100,"perDoc" : 1},
-    					{"type" : "boolean","docs" : 2,"coverage" : 50,"perDoc" : 1},
-    					{"type" : "number","docs" : 1,"coverage" : 25,"perDoc" : 1},
-    					{"type" : "string","docs" : 1,"coverage" : 25,"perDoc" : 1}
-    				]
-    			}
-    		},
-    		{
-    			"_id" : "name",
-    			"value" : {
-    				"wildcard" : false,
-    				"types" : ["bson","string"],
-    				"results" : [
-    					{"type" : "all","docs" : 4,"coverage" : 100,"perDoc" : 1},
-    					{"type" : "bson","docs" : 3,"coverage" : 75,"perDoc" : 1},
-    					{"type" : "string","docs" : 1,"coverage" : 25,"perDoc" : 1}
-    				]
-    			}
-    		},
-    		{
-    			"_id" : "name.first",
-    			"value" : {
-    				"wildcard" : false,
-    				"types" : ["string"],
-    				"results" : [
-    					{"type" : "all","docs" : 3,"coverage" : 75,"perDoc" : 1},
-    					{"type" : "string","docs" : 3,"coverage" : 75,"perDoc" : 1}
-    				]
-    			}
-    		},
-    		{
-    			"_id" : "name.last",
-    			"value" : {
-    				"wildcard" : false,
-    				"types" : ["string"],
-    				"results" : [
-    					{"type" : "all","docs" : 3,"coverage" : 75,"perDoc" : 1},
-    					{"type" : "string","docs" : 3,"coverage" : 75,"perDoc" : 1}
-    				]
-    			}
-    		},
-    		{
-    			"_id" : "tags",
-    			"value" : {
-    				"wildcard" : false,
-    				"types" : ["array"],
-    				"results" : [
-    					{"type" : "all","docs" : 4,"coverage" : 100,"perDoc" : 1},
-    					{"type" : "array","docs" : 4,"coverage" : 100,"perDoc" : 1}
-    				]
-    			}
-    		},
-    		{
-    			"_id" : "tags.$",
-    			"value" : {
-    				"wildcard" : true,
-    				"types" : ["string"],
-    				"results" : [
-    					{"type" : "all","docs" : 4,"coverage" : 100,"perDoc" : 1.25},
-    					{"type" : "string","docs" : 4,"coverage" : 100,"perDoc" : 1.25}
-    				]
-    			}
-    		}
-    	],
-    	"timeMillis" : 16,
-    	"counts" : {"input" : 4,"emit" : 26,"reduce" : 7,"output" : 7},
-    	"ok" : 1,
+      "results" : [
+        {
+          "_id" : "_id",
+          "value" : {
+            "wildcard" : false,
+            "types" : ["objectid"],
+            "results" : [
+              {"type" : "all","docs" : 4,"coverage" : 100,"perDoc" : 1},
+              {"type" : "objectid","docs" : 4,"coverage" : 100,"perDoc" : 1}
+            ]
+          }
+        },
+        {
+          "_id" : "isRegistered",
+          "value" : {
+            "wildcard" : false,
+            "types" : ["boolean","number","string"],
+            "results" : [
+              {"type" : "all","docs" : 4,"coverage" : 100,"perDoc" : 1},
+              {"type" : "boolean","docs" : 2,"coverage" : 50,"perDoc" : 1},
+              {"type" : "number","docs" : 1,"coverage" : 25,"perDoc" : 1},
+              {"type" : "string","docs" : 1,"coverage" : 25,"perDoc" : 1}
+            ]
+          }
+        },
+        {
+          "_id" : "name",
+          "value" : {
+            "wildcard" : false,
+            "types" : ["bson","string"],
+            "results" : [
+              {"type" : "all","docs" : 4,"coverage" : 100,"perDoc" : 1},
+              {"type" : "bson","docs" : 3,"coverage" : 75,"perDoc" : 1},
+              {"type" : "string","docs" : 1,"coverage" : 25,"perDoc" : 1}
+            ]
+          }
+        },
+        {
+          "_id" : "name.first",
+          "value" : {
+            "wildcard" : false,
+            "types" : ["string"],
+            "results" : [
+              {"type" : "all","docs" : 3,"coverage" : 75,"perDoc" : 1},
+              {"type" : "string","docs" : 3,"coverage" : 75,"perDoc" : 1}
+            ]
+          }
+        },
+        {
+          "_id" : "name.last",
+          "value" : {
+            "wildcard" : false,
+            "types" : ["string"],
+            "results" : [
+              {"type" : "all","docs" : 3,"coverage" : 75,"perDoc" : 1},
+              {"type" : "string","docs" : 3,"coverage" : 75,"perDoc" : 1}
+            ]
+          }
+        },
+        {
+          "_id" : "tags",
+          "value" : {
+            "wildcard" : false,
+            "types" : ["array"],
+            "results" : [
+              {"type" : "all","docs" : 4,"coverage" : 100,"perDoc" : 1},
+              {"type" : "array","docs" : 4,"coverage" : 100,"perDoc" : 1}
+            ]
+          }
+        },
+        {
+          "_id" : "tags.$",
+          "value" : {
+            "wildcard" : true,
+            "types" : ["string"],
+            "results" : [
+              {"type" : "all","docs" : 4,"coverage" : 100,"perDoc" : 1.25},
+              {"type" : "string","docs" : 4,"coverage" : 100,"perDoc" : 1.25}
+            ]
+          }
+        }
+      ],
+      "timeMillis" : 16,
+      "counts" : {"input" : 4,"emit" : 26,"reduce" : 7,"output" : 7},
+      "ok" : 1,
     }
 
 ## Caveats: ##
