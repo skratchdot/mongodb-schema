@@ -13,7 +13,7 @@
  * Description:
  * 
  * This is a schema analysis tool for MongoDB. It accomplishes this by
- * extended the mongo shell, and providing a new function called schema()
+ * extending the mongo shell, and providing a new function called schema()
  * with the following signature:
  * 
  *     DBCollection.prototype.schema = function (optionsOrOutString)
