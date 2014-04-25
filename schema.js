@@ -5,7 +5,7 @@
  * 
  *      Version: 1.1
  *         Date: May 28, 2012
- *      Project: http://skratchdot.github.com/mongodb-schema/
+ *      Project: http://projects.skratchdot.com/mongodb-schema/
  *  Source Code: https://github.com/skratchdot/mongodb-schema/
  *       Issues: https://github.com/skratchdot/mongodb-schema/issues/
  * Dependencies: MongoDB v1.8+
