@@ -189,21 +189,24 @@
 			if (keyString === '' || (usePositiveFields && (!fields.hasOwnProperty(keyString) || fields[keyString] !== 1)) || (useNegativeFields && fields.hasOwnProperty(keyString) && fields[keyString] === -1)) {
 				return keyInfo;
 			}
+            // We need to emit this key
+            if (!keyInfo.hasOwnProperty(keyString)) {
+                keyInfo[keyString] = {};
+            }
+            
+            if (!keyInfo[keyString].hasOwnProperty(type)) {
+                keyInfo[keyString][type] = {
+                    docs : 1,
+                    coverage : 0,
+                    perDoc : 0,
+                };
+            }
 
-			// We need to emit this key
-			if (keyInfo.hasOwnProperty(keyString) && keyInfo[keyString].hasOwnProperty(type)) {
-				keyInfo[keyString][type].perDoc += 1;
-			} else {
-				keyInfo[keyString] = {};
-				keyInfo[keyString][type] = {
-					docs : 1,
-					coverage : 0,
-					perDoc : 1
-				};
-			}
+            keyInfo[keyString][type].perDoc += 1;
 
 			return keyInfo;
 		};
+
 
 		/**
 		 * @function
